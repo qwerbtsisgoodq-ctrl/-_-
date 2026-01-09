@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>발로란트 감도 공유</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Firebase compat SDK (가장 안정적) -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+  <style>
+    body { margin:0; font-family:Arial; background:#0f1923; color:#fff; }
+    header { background:#ff4655; padding:16px; font-size:20px; font-weight:bold; }
+    .container { max-width:700px; margin:auto; padding:20px; }
+    input, select, button { width:100%; padding:10px; margin-top:8px; }
+    button { background:#ff4655; border:none; color:white; cursor:pointer; }
+    .card { background:#1c2b3a; padding:12px; margin-top:12px; border-radius:8px; }
+    .like { color:#ff4655; cursor:pointer; }
+  </style>
+</head>
+<body>
+  <header>발로란트 감도 공유 (로그인 없음)</header>
+
+  <div class="container">
+    <h3>감도 공유</h3>
+    <input id="title" placeholder="감도 제목 (예: 프로 저감도 추천)" />
+    <input id="dpi" placeholder="DPI (예: 800)" />
+    <input id="sens" placeholder="게임 감도 (예: 0.35)" />
+    <select id="type">
+      <option value="저감도">저감도</option>
+      <option value="고감도">고감도</option>
+    </select>
+    <label id="devBox" style="display:none;align-items:center;gap:8px;margin-top:8px;">
+      <input type="checkbox" id="isDev" /> 개발자 표시
+    </label>
+    <button id="shareBtn">공유하기</button>
+
+    <h3>🔥 랭킹</h3>
+    <input id="search" placeholder="제목 / DPI / 감도 검색" />
+    <div id="list"></div>
+  </div>
+
+  <script>
+    // 🔑 Firebase 설정 (네 값 그대로 유지)
+    const firebaseConfig = {
+      apiKey: "AIzaSyDNeVgQ7eM0pPA09BR1QzK35LXkGR4FfVY",
+      authDomain: "project-1344021556882382518.firebaseapp.com",
+      projectId: "project-1344021556882382518"
+    };
+
+    // 🔐 개발자 인증 코드 (URL 방식 – 100% 작동)
+    const DEV_CODE = "534646";
+    const params = new URLSearchParams(window.location.search);
+
+    if(params.get('dev') === '1'){
+      const inputCode = prompt('개발자 인증코드를 입력하세요');
+      if(inputCode === DEV_CODE){
+        const box = document.getElementById('devBox');
+        if(box) box.style.display = 'flex';
+        alert('개발자 모드 활성화');
+      } else if(inputCode !== null){
+        alert('인증 실패');
+      }
+    }
+
+    // firebase 초기화 아래에서 실행됨
